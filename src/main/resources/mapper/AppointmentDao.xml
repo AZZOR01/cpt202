@@ -1,0 +1,179 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.cpt202.fitness.dao.AppointmentDao">
+
+    <resultMap type="com.cpt202.fitness.entity.Appointment" id="AppointmentMap">
+        <result property="id" column="id" jdbcType="INTEGER"/>
+        <result property="addtime" column="addtime" jdbcType="TIMESTAMP"/>
+        <result property="trainerid" column="trainerID" jdbcType="VARCHAR"/>
+        <result property="trainername" column="trainername" jdbcType="VARCHAR"/>
+        <result property="time" column="time" jdbcType="TIMESTAMP"/>
+        <result property="appointmentinfo" column="appointmentinfo" jdbcType="VARCHAR"/>
+        <result property="account" column="account" jdbcType="VARCHAR"/>
+        <result property="name" column="name" jdbcType="VARCHAR"/>
+        <result property="phone" column="phone" jdbcType="VARCHAR"/>
+        <result property="sfsh" column="sfsh" jdbcType="VARCHAR"/>
+        <result property="shhf" column="shhf" jdbcType="VARCHAR"/>
+    </resultMap>
+
+    <!--查询单个-->
+    <select id="queryById" resultMap="AppointmentMap">
+        select
+idaddtimetrainerIDtrainernametimeappointmentinfoaccountnamephonesfshshhf
+        from appointment
+        where id = #{id}
+    </select>
+
+    <!--查询指定行数据-->
+    <select id="queryAllByLimit" resultMap="AppointmentMap">
+        select
+idaddtimetrainerIDtrainernametimeappointmentinfoaccountnamephonesfshshhf
+        from appointment
+        <where>
+            <if test="id != null">
+                and id = #{id}
+            </if>
+            <if test="addtime != null">
+                and addtime = #{addtime}
+            </if>
+            <if test="trainerid != null and trainerid != ''">
+                and trainerID = #{trainerid}
+            </if>
+            <if test="trainername != null and trainername != ''">
+                and trainername = #{trainername}
+            </if>
+            <if test="time != null">
+                and time = #{time}
+            </if>
+            <if test="appointmentinfo != null and appointmentinfo != ''">
+                and appointmentinfo = #{appointmentinfo}
+            </if>
+            <if test="account != null and account != ''">
+                and account = #{account}
+            </if>
+            <if test="name != null and name != ''">
+                and name = #{name}
+            </if>
+            <if test="phone != null and phone != ''">
+                and phone = #{phone}
+            </if>
+            <if test="sfsh != null and sfsh != ''">
+                and sfsh = #{sfsh}
+            </if>
+            <if test="shhf != null and shhf != ''">
+                and shhf = #{shhf}
+            </if>
+        </where>
+        limit #{pageable.offset}, #{pageable.pageSize}
+    </select>
+
+    <!--统计总行数-->
+    <select id="count" resultType="java.lang.Long">
+        select count(1)
+        from appointment
+        <where>
+            <if test="id != null">
+                and id = #{id}
+            </if>
+            <if test="addtime != null">
+                and addtime = #{addtime}
+            </if>
+            <if test="trainerid != null and trainerid != ''">
+                and trainerID = #{trainerid}
+            </if>
+            <if test="trainername != null and trainername != ''">
+                and trainername = #{trainername}
+            </if>
+            <if test="time != null">
+                and time = #{time}
+            </if>
+            <if test="appointmentinfo != null and appointmentinfo != ''">
+                and appointmentinfo = #{appointmentinfo}
+            </if>
+            <if test="account != null and account != ''">
+                and account = #{account}
+            </if>
+            <if test="name != null and name != ''">
+                and name = #{name}
+            </if>
+            <if test="phone != null and phone != ''">
+                and phone = #{phone}
+            </if>
+            <if test="sfsh != null and sfsh != ''">
+                and sfsh = #{sfsh}
+            </if>
+            <if test="shhf != null and shhf != ''">
+                and shhf = #{shhf}
+            </if>
+        </where>
+    </select>
+
+    <!--新增所有列-->
+    <insert id="insert" keyProperty="id" useGeneratedKeys="true">
+        insert into appointment(addtimetrainerIDtrainernametimeappointmentinfoaccountnamephonesfshshhf)
+        values (#{addtime}#{trainerid}#{trainername}#{time}#{appointmentinfo}#{account}#{name}#{phone}#{sfsh}#{shhf})
+    </insert>
+
+    <insert id="insertBatch" keyProperty="id" useGeneratedKeys="true">
+        insert into appointment(addtimetrainerIDtrainernametimeappointmentinfoaccountnamephonesfshshhf)
+        values
+        <foreach collection="entities" item="entity" separator=",">
+        (#{entity.addtime}#{entity.trainerid}#{entity.trainername}#{entity.time}#{entity.appointmentinfo}#{entity.account}#{entity.name}#{entity.phone}#{entity.sfsh}#{entity.shhf})
+        </foreach>
+    </insert>
+
+    <insert id="insertOrUpdateBatch" keyProperty="id" useGeneratedKeys="true">
+        insert into appointment(addtimetrainerIDtrainernametimeappointmentinfoaccountnamephonesfshshhf)
+        values
+        <foreach collection="entities" item="entity" separator=",">
+            (#{entity.addtime}#{entity.trainerid}#{entity.trainername}#{entity.time}#{entity.appointmentinfo}#{entity.account}#{entity.name}#{entity.phone}#{entity.sfsh}#{entity.shhf})
+        </foreach>
+        on duplicate key update
+addtime = values(addtime)trainerID = values(trainerID)trainername = values(trainername)time = values(time)appointmentinfo = values(appointmentinfo)account = values(account)name = values(name)phone = values(phone)sfsh = values(sfsh)shhf = values(shhf)
+    </insert>
+
+    <!--通过主键修改数据-->
+    <update id="update">
+        update appointment
+        <set>
+            <if test="addtime != null">
+                addtime = #{addtime},
+            </if>
+            <if test="trainerid != null and trainerid != ''">
+                trainerID = #{trainerid},
+            </if>
+            <if test="trainername != null and trainername != ''">
+                trainername = #{trainername},
+            </if>
+            <if test="time != null">
+                time = #{time},
+            </if>
+            <if test="appointmentinfo != null and appointmentinfo != ''">
+                appointmentinfo = #{appointmentinfo},
+            </if>
+            <if test="account != null and account != ''">
+                account = #{account},
+            </if>
+            <if test="name != null and name != ''">
+                name = #{name},
+            </if>
+            <if test="phone != null and phone != ''">
+                phone = #{phone},
+            </if>
+            <if test="sfsh != null and sfsh != ''">
+                sfsh = #{sfsh},
+            </if>
+            <if test="shhf != null and shhf != ''">
+                shhf = #{shhf},
+            </if>
+        </set>
+        where id = #{id}
+    </update>
+
+    <!--通过主键删除-->
+    <delete id="deleteById">
+        delete from appointment where id = #{id}
+    </delete>
+
+</mapper>
+

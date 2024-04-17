@@ -1,0 +1,159 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.cpt202.fitness.dao.MemberDao">
+
+    <resultMap type="com.cpt202.fitness.entity.Member" id="MemberMap">
+        <result property="memberid" column="MemberID" jdbcType="INTEGER"/>
+        <result property="mbusername" column="MBusername" jdbcType="VARCHAR"/>
+        <result property="mbpassword" column="MBpassword" jdbcType="VARCHAR"/>
+        <result property="mbnickname" column="MBnickName" jdbcType="VARCHAR"/>
+        <result property="mbphone" column="MBphone" jdbcType="VARCHAR"/>
+        <result property="mbemail" column="MBemail" jdbcType="VARCHAR"/>
+        <result property="mbbirthdate" column="MBbirthdate" jdbcType="VARCHAR"/>
+        <result property="mbgender" column="MBgender" jdbcType="VARCHAR"/>
+        <result property="addtime" column="addtime" jdbcType="TIMESTAMP"/>
+    </resultMap>
+
+    <!--查询单个-->
+    <select id="queryById" resultMap="MemberMap">
+        select
+MemberIDMBusernameMBpasswordMBnickNameMBphoneMBemailMBbirthdateMBgenderaddtime
+        from member
+        where MemberID = #{memberid}
+    </select>
+
+    <!--查询指定行数据-->
+    <select id="queryAllByLimit" resultMap="MemberMap">
+        select
+MemberIDMBusernameMBpasswordMBnickNameMBphoneMBemailMBbirthdateMBgenderaddtime
+        from member
+        <where>
+            <if test="memberid != null">
+                and MemberID = #{memberid}
+            </if>
+            <if test="mbusername != null and mbusername != ''">
+                and MBusername = #{mbusername}
+            </if>
+            <if test="mbpassword != null and mbpassword != ''">
+                and MBpassword = #{mbpassword}
+            </if>
+            <if test="mbnickname != null and mbnickname != ''">
+                and MBnickName = #{mbnickname}
+            </if>
+            <if test="mbphone != null and mbphone != ''">
+                and MBphone = #{mbphone}
+            </if>
+            <if test="mbemail != null and mbemail != ''">
+                and MBemail = #{mbemail}
+            </if>
+            <if test="mbbirthdate != null and mbbirthdate != ''">
+                and MBbirthdate = #{mbbirthdate}
+            </if>
+            <if test="mbgender != null and mbgender != ''">
+                and MBgender = #{mbgender}
+            </if>
+            <if test="addtime != null">
+                and addtime = #{addtime}
+            </if>
+        </where>
+        limit #{pageable.offset}, #{pageable.pageSize}
+    </select>
+
+    <!--统计总行数-->
+    <select id="count" resultType="java.lang.Long">
+        select count(1)
+        from member
+        <where>
+            <if test="memberid != null">
+                and MemberID = #{memberid}
+            </if>
+            <if test="mbusername != null and mbusername != ''">
+                and MBusername = #{mbusername}
+            </if>
+            <if test="mbpassword != null and mbpassword != ''">
+                and MBpassword = #{mbpassword}
+            </if>
+            <if test="mbnickname != null and mbnickname != ''">
+                and MBnickName = #{mbnickname}
+            </if>
+            <if test="mbphone != null and mbphone != ''">
+                and MBphone = #{mbphone}
+            </if>
+            <if test="mbemail != null and mbemail != ''">
+                and MBemail = #{mbemail}
+            </if>
+            <if test="mbbirthdate != null and mbbirthdate != ''">
+                and MBbirthdate = #{mbbirthdate}
+            </if>
+            <if test="mbgender != null and mbgender != ''">
+                and MBgender = #{mbgender}
+            </if>
+            <if test="addtime != null">
+                and addtime = #{addtime}
+            </if>
+        </where>
+    </select>
+
+    <!--新增所有列-->
+    <insert id="insert" keyProperty="memberid" useGeneratedKeys="true">
+        insert into member(MBusernameMBpasswordMBnickNameMBphoneMBemailMBbirthdateMBgenderaddtime)
+        values (#{mbusername}#{mbpassword}#{mbnickname}#{mbphone}#{mbemail}#{mbbirthdate}#{mbgender}#{addtime})
+    </insert>
+
+    <insert id="insertBatch" keyProperty="memberid" useGeneratedKeys="true">
+        insert into member(MBusernameMBpasswordMBnickNameMBphoneMBemailMBbirthdateMBgenderaddtime)
+        values
+        <foreach collection="entities" item="entity" separator=",">
+        (#{entity.mbusername}#{entity.mbpassword}#{entity.mbnickname}#{entity.mbphone}#{entity.mbemail}#{entity.mbbirthdate}#{entity.mbgender}#{entity.addtime})
+        </foreach>
+    </insert>
+
+    <insert id="insertOrUpdateBatch" keyProperty="memberid" useGeneratedKeys="true">
+        insert into member(MBusernameMBpasswordMBnickNameMBphoneMBemailMBbirthdateMBgenderaddtime)
+        values
+        <foreach collection="entities" item="entity" separator=",">
+            (#{entity.mbusername}#{entity.mbpassword}#{entity.mbnickname}#{entity.mbphone}#{entity.mbemail}#{entity.mbbirthdate}#{entity.mbgender}#{entity.addtime})
+        </foreach>
+        on duplicate key update
+MBusername = values(MBusername)MBpassword = values(MBpassword)MBnickName = values(MBnickName)MBphone = values(MBphone)MBemail = values(MBemail)MBbirthdate = values(MBbirthdate)MBgender = values(MBgender)addtime = values(addtime)
+    </insert>
+
+    <!--通过主键修改数据-->
+    <update id="update">
+        update member
+        <set>
+            <if test="mbusername != null and mbusername != ''">
+                MBusername = #{mbusername},
+            </if>
+            <if test="mbpassword != null and mbpassword != ''">
+                MBpassword = #{mbpassword},
+            </if>
+            <if test="mbnickname != null and mbnickname != ''">
+                MBnickName = #{mbnickname},
+            </if>
+            <if test="mbphone != null and mbphone != ''">
+                MBphone = #{mbphone},
+            </if>
+            <if test="mbemail != null and mbemail != ''">
+                MBemail = #{mbemail},
+            </if>
+            <if test="mbbirthdate != null and mbbirthdate != ''">
+                MBbirthdate = #{mbbirthdate},
+            </if>
+            <if test="mbgender != null and mbgender != ''">
+                MBgender = #{mbgender},
+            </if>
+            <if test="addtime != null">
+                addtime = #{addtime},
+            </if>
+        </set>
+        where MemberID = #{memberid}
+    </update>
+
+    <!--通过主键删除-->
+    <delete id="deleteById">
+        delete from member where MemberID = #{memberid}
+    </delete>
+
+</mapper>
+

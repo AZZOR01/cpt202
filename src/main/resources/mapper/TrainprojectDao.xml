@@ -1,0 +1,159 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.cpt202.fitness.dao.TrainprojectDao">
+
+    <resultMap type="com.cpt202.fitness.entity.Trainproject" id="TrainprojectMap">
+        <result property="id" column="id" jdbcType="INTEGER"/>
+        <result property="addtime" column="addtime" jdbcType="TIMESTAMP"/>
+        <result property="projectname" column="projectname" jdbcType="VARCHAR"/>
+        <result property="projecttype" column="projecttype" jdbcType="VARCHAR"/>
+        <result property="projectresult" column="projectresult" jdbcType="VARCHAR"/>
+        <result property="projectinfo" column="projectinfo" jdbcType="VARCHAR"/>
+        <result property="projectpic" column="projectpic" jdbcType="VARCHAR"/>
+        <result property="clicktime" column="clicktime" jdbcType="TIMESTAMP"/>
+        <result property="clicknum" column="clicknum" jdbcType="INTEGER"/>
+    </resultMap>
+
+    <!--查询单个-->
+    <select id="queryById" resultMap="TrainprojectMap">
+        select
+idaddtimeprojectnameprojecttypeprojectresultprojectinfoprojectpicclicktimeclicknum
+        from trainproject
+        where id = #{id}
+    </select>
+
+    <!--查询指定行数据-->
+    <select id="queryAllByLimit" resultMap="TrainprojectMap">
+        select
+idaddtimeprojectnameprojecttypeprojectresultprojectinfoprojectpicclicktimeclicknum
+        from trainproject
+        <where>
+            <if test="id != null">
+                and id = #{id}
+            </if>
+            <if test="addtime != null">
+                and addtime = #{addtime}
+            </if>
+            <if test="projectname != null and projectname != ''">
+                and projectname = #{projectname}
+            </if>
+            <if test="projecttype != null and projecttype != ''">
+                and projecttype = #{projecttype}
+            </if>
+            <if test="projectresult != null and projectresult != ''">
+                and projectresult = #{projectresult}
+            </if>
+            <if test="projectinfo != null and projectinfo != ''">
+                and projectinfo = #{projectinfo}
+            </if>
+            <if test="projectpic != null and projectpic != ''">
+                and projectpic = #{projectpic}
+            </if>
+            <if test="clicktime != null">
+                and clicktime = #{clicktime}
+            </if>
+            <if test="clicknum != null">
+                and clicknum = #{clicknum}
+            </if>
+        </where>
+        limit #{pageable.offset}, #{pageable.pageSize}
+    </select>
+
+    <!--统计总行数-->
+    <select id="count" resultType="java.lang.Long">
+        select count(1)
+        from trainproject
+        <where>
+            <if test="id != null">
+                and id = #{id}
+            </if>
+            <if test="addtime != null">
+                and addtime = #{addtime}
+            </if>
+            <if test="projectname != null and projectname != ''">
+                and projectname = #{projectname}
+            </if>
+            <if test="projecttype != null and projecttype != ''">
+                and projecttype = #{projecttype}
+            </if>
+            <if test="projectresult != null and projectresult != ''">
+                and projectresult = #{projectresult}
+            </if>
+            <if test="projectinfo != null and projectinfo != ''">
+                and projectinfo = #{projectinfo}
+            </if>
+            <if test="projectpic != null and projectpic != ''">
+                and projectpic = #{projectpic}
+            </if>
+            <if test="clicktime != null">
+                and clicktime = #{clicktime}
+            </if>
+            <if test="clicknum != null">
+                and clicknum = #{clicknum}
+            </if>
+        </where>
+    </select>
+
+    <!--新增所有列-->
+    <insert id="insert" keyProperty="id" useGeneratedKeys="true">
+        insert into trainproject(addtimeprojectnameprojecttypeprojectresultprojectinfoprojectpicclicktimeclicknum)
+        values (#{addtime}#{projectname}#{projecttype}#{projectresult}#{projectinfo}#{projectpic}#{clicktime}#{clicknum})
+    </insert>
+
+    <insert id="insertBatch" keyProperty="id" useGeneratedKeys="true">
+        insert into trainproject(addtimeprojectnameprojecttypeprojectresultprojectinfoprojectpicclicktimeclicknum)
+        values
+        <foreach collection="entities" item="entity" separator=",">
+        (#{entity.addtime}#{entity.projectname}#{entity.projecttype}#{entity.projectresult}#{entity.projectinfo}#{entity.projectpic}#{entity.clicktime}#{entity.clicknum})
+        </foreach>
+    </insert>
+
+    <insert id="insertOrUpdateBatch" keyProperty="id" useGeneratedKeys="true">
+        insert into trainproject(addtimeprojectnameprojecttypeprojectresultprojectinfoprojectpicclicktimeclicknum)
+        values
+        <foreach collection="entities" item="entity" separator=",">
+            (#{entity.addtime}#{entity.projectname}#{entity.projecttype}#{entity.projectresult}#{entity.projectinfo}#{entity.projectpic}#{entity.clicktime}#{entity.clicknum})
+        </foreach>
+        on duplicate key update
+addtime = values(addtime)projectname = values(projectname)projecttype = values(projecttype)projectresult = values(projectresult)projectinfo = values(projectinfo)projectpic = values(projectpic)clicktime = values(clicktime)clicknum = values(clicknum)
+    </insert>
+
+    <!--通过主键修改数据-->
+    <update id="update">
+        update trainproject
+        <set>
+            <if test="addtime != null">
+                addtime = #{addtime},
+            </if>
+            <if test="projectname != null and projectname != ''">
+                projectname = #{projectname},
+            </if>
+            <if test="projecttype != null and projecttype != ''">
+                projecttype = #{projecttype},
+            </if>
+            <if test="projectresult != null and projectresult != ''">
+                projectresult = #{projectresult},
+            </if>
+            <if test="projectinfo != null and projectinfo != ''">
+                projectinfo = #{projectinfo},
+            </if>
+            <if test="projectpic != null and projectpic != ''">
+                projectpic = #{projectpic},
+            </if>
+            <if test="clicktime != null">
+                clicktime = #{clicktime},
+            </if>
+            <if test="clicknum != null">
+                clicknum = #{clicknum},
+            </if>
+        </set>
+        where id = #{id}
+    </update>
+
+    <!--通过主键删除-->
+    <delete id="deleteById">
+        delete from trainproject where id = #{id}
+    </delete>
+
+</mapper>
+
